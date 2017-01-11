@@ -95,23 +95,6 @@ namespace OpenTK
         }
 
         /// <summary>
-        /// Retrieves an unmanaged function pointer to the specified function.
-        /// </summary>
-        /// <param name="funcname">
-        /// A <see cref="System.String"/> that defines the name of the function.
-        /// </param>
-        /// <returns>
-        /// A <see cref="IntPtr"/> that contains the address of funcname or IntPtr.Zero,
-        /// if the function is not supported by the drivers.
-        /// </returns>
-        /// <remarks>
-        /// Note: some drivers are known to return non-zero values for unsupported functions.
-        /// Typical values include 1 and 2 - inheritors are advised to check for and ignore these
-        /// values.
-        /// </remarks>
-        protected abstract IntPtr GetAddress(string funcname);
-
-        /// <summary>
         /// Gets an object that can be used to synchronize access to the bindings implementation.
         /// </summary>
         /// <remarks>This object should be unique across bindings but consistent between bindings
@@ -125,7 +108,7 @@ namespace OpenTK
 
         #region LoadEntryPoints
 
-        internal void LoadEntryPoints()
+        internal void LoadEntryPoints(Func<string, IntPtr> addressFinder)
         {
             // Using reflection is more than 3 times faster than directly loading delegates on the first
             // run, probably due to code generation overhead. Subsequent runs are faster with direct loading
@@ -145,7 +128,7 @@ namespace OpenTK
 
             foreach (FieldInfo f in delegates)
             {
-                Delegate d = LoadDelegate(f.Name, f.FieldType);
+                Delegate d = LoadDelegate(f.Name, f.FieldType, addressFinder);
                 if (d != null)
                     ++supported;
 
@@ -166,14 +149,14 @@ namespace OpenTK
 
         #region LoadEntryPoint
 
-        internal bool LoadEntryPoint(string function)
+        internal bool LoadEntryPoint(string function, Func<string, IntPtr> addressFinder)
         {
             FieldInfo f = DelegatesClass.GetField(function, BindingFlags.Static | BindingFlags.NonPublic);
             if (f == null)
                 return false;
 
             Delegate old = f.GetValue(null) as Delegate;
-            Delegate @new = LoadDelegate(f.Name, f.FieldType);
+            Delegate @new = LoadDelegate(f.Name, f.FieldType, addressFinder);
             lock (SyncRoot)
             {
                 if (old.Target != @new.Target)
@@ -193,11 +176,11 @@ namespace OpenTK
         #region LoadDelegate
 
         // Tries to load the specified core or extension function.
-        Delegate LoadDelegate(string name, Type signature)
+        Delegate LoadDelegate(string name, Type signature, Func<string, IntPtr> addressFinder)
         {
             MethodInfo m;
             return
-                GetExtensionDelegate(name, signature) ??
+                GetExtensionDelegate(name, signature, addressFinder) ??
                 (CoreFunctionMap.TryGetValue((name.Substring(2)), out m) ?
                 Delegate.CreateDelegate(signature, m) : null);
         }
@@ -207,9 +190,9 @@ namespace OpenTK
         #region GetExtensionDelegate
 
         // Creates a System.Delegate that can be used to call a dynamically exported OpenGL function.
-        internal Delegate GetExtensionDelegate(string name, Type signature)
+        internal Delegate GetExtensionDelegate(string name, Type signature, Func<string, IntPtr> addressFinder)
         {
-            IntPtr address = GetAddress(name);
+            IntPtr address = addressFinder.Invoke(name);
             
             if (address == IntPtr.Zero ||
                 address == new IntPtr(1) ||     // Workaround for buggy nvidia drivers which return

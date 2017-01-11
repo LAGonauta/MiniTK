@@ -80,9 +80,9 @@ namespace OpenTK.Graphics.OpenGL
         /// This method is provided for compatibility purposes with older OpenTK versions.
         /// </summary>
         //[Obsolete("If you are using a context constructed outside of OpenTK, create a new GraphicsContext and pass your context handle to it. Otherwise, there is no need to call this method.")]
-        public static void LoadAll()
+        public static void LoadAll( Func<string, IntPtr> addressFinder )
         {
-            new GL().LoadEntryPoints();
+            new GL().LoadEntryPoints(addressFinder);
         }
 
         #endregion
