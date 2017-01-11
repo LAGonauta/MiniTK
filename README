@@ -15,4 +15,4 @@ but after calling SDL_GL_CreateContext, add the following lines:
 OpenTK.Graphics.GraphicsContext.CurrentContext = yourContextIntPtr;
 GL.LoadAll( SDL.SDL_GL_GetProcAddress );
 
-This will load the OpenTK entry points
+This will load the OpenTK entry points.
