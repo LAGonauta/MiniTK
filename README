@@ -1,4 +1,4 @@
-This is MiniTK, an easy to use set of OpenGL and OpenAL for C#, based on OpenTK. It is designed for use with (and was originally part of) SDL2#, a C# wrapper for SDL2, but does not depend on that project. See https://github.com/flibitijibibo/SDL2-CS for more information.
+This is MiniTK, an easy to use set of OpenGL and OpenAL bindings for C#, based on OpenTK. It is designed for use with (and was originally part of) SDL2#, a C# wrapper for SDL2, but does not depend on that project. See https://github.com/flibitijibibo/SDL2-CS for more information.
 
 License
 -------
