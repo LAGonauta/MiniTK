@@ -63,7 +63,7 @@ MINITK = \
 	src/MiniTK/Graphics/ES11/Delegates.cs \
 	src/MiniTK/Graphics/ES11/Helper.cs \
 	src/MiniTK/Graphics/ES11/ES.cs \
-	src/MiniTK/Graphics/SDL2_GraphicsContext.cs \
+	src/MiniTK/Graphics/GraphicsContext.cs \
 	src/MiniTK/Graphics/Color4.cs \
 	src/MiniTK/Graphics/GraphicsContextException.cs \
 	src/MiniTK/Graphics/GraphicsErrorException.cs \
