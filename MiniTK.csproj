@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -101,12 +101,28 @@
     <Compile Include="src\MiniTK\Math\BezierCurveCubic.cs" />
     <Compile Include="src\MiniTK\Math\BezierCurveQuadric.cs" />
     <Compile Include="src\MiniTK\Math\Box2.cs" />
+    <Compile Include="src\MiniTK\Math\Box2d.cs" />
     <Compile Include="src\MiniTK\Math\Functions.cs" />
     <Compile Include="src\MiniTK\Math\Half.cs" />
     <Compile Include="src\MiniTK\Math\MathHelper.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2x3.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2x3d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2x4.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix2x4d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix3.cs" />
     <Compile Include="src\MiniTK\Math\Matrix3d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix3x2.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix3x2d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix3x4.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix3x4d.cs" />
     <Compile Include="src\MiniTK\Math\Matrix4.cs" />
     <Compile Include="src\MiniTK\Math\Matrix4d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix4x2.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix4x2d.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix4x3.cs" />
+    <Compile Include="src\MiniTK\Math\Matrix4x3d.cs" />
     <Compile Include="src\MiniTK\Math\Point.cs" />
     <Compile Include="src\MiniTK\Math\Quaternion.cs" />
     <Compile Include="src\MiniTK\Math\Quaterniond.cs" />

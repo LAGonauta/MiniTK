@@ -31,13 +31,13 @@ using System.Text;
 
 namespace OpenTK.Audio
 {
-    /// <summary>Represents exceptions related to invalid values.</summary>
-    public class AudioValueException : AudioException
-    {
-        /// <summary>Constructs a new instance.</summary>
-        public AudioValueException() : base() { }
-        /// <summary>Constructs a new instance with the specified error message.</summary>
-        /// <param name="message">The error message of the AudioContextException.</param>
-        public AudioValueException(string message) : base(message) { }
-    }
+  /// <summary>Represents exceptions related to invalid values.</summary>
+  public class AudioValueException : AudioException
+  {
+    /// <summary>Constructs a new instance.</summary>
+    public AudioValueException() : base() { }
+    /// <summary>Constructs a new instance with the specified error message.</summary>
+    /// <param name="message">The error message of the AudioContextException.</param>
+    public AudioValueException(string message) : base(message) { }
+  }
 }

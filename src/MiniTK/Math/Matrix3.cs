@@ -28,33 +28,38 @@ using System.Runtime.InteropServices;
 namespace OpenTK
 {
   /// <summary>
-  /// Represents a 3x3 matrix containing 3D rotation and scale with double-precision components.
+  /// Represents a 3x3 matrix containing 3D rotation and scale.
   /// </summary>
   [Serializable]
   [StructLayout(LayoutKind.Sequential)]
-  public struct Matrix3d : IEquatable<Matrix3d>
+  public struct Matrix3 : IEquatable<Matrix3>
   {
     #region Fields
 
     /// <summary>
     /// First row of the matrix.
     /// </summary>
-    public Vector3d Row0;
+    public Vector3 Row0;
 
     /// <summary>
     /// Second row of the matrix.
     /// </summary>
-    public Vector3d Row1;
+    public Vector3 Row1;
 
     /// <summary>
     /// Third row of the matrix.
     /// </summary>
-    public Vector3d Row2;
+    public Vector3 Row2;
 
     /// <summary>
     /// The identity matrix.
     /// </summary>
-    public static Matrix3d Identity = new Matrix3d(Vector3d.UnitX, Vector3d.UnitY, Vector3d.UnitZ);
+    public static readonly Matrix3 Identity = new Matrix3(Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ);
+
+    /// <summary>
+    /// The zero matrix.
+    /// </summary>
+    public static readonly Matrix3 Zero = new Matrix3(Vector3.Zero, Vector3.Zero, Vector3.Zero);
 
     #endregion
 
@@ -66,7 +71,7 @@ namespace OpenTK
     /// <param name="row0">Top row of the matrix</param>
     /// <param name="row1">Second row of the matrix</param>
     /// <param name="row2">Bottom row of the matrix</param>
-    public Matrix3d(Vector3d row0, Vector3d row1, Vector3d row2)
+    public Matrix3(Vector3 row0, Vector3 row1, Vector3 row2)
     {
       Row0 = row0;
       Row1 = row1;
@@ -85,21 +90,21 @@ namespace OpenTK
     /// <param name="m20">First item of the third row of the matrix.</param>
     /// <param name="m21">Second item of the third row of the matrix.</param>
     /// <param name="m22">Third item of the third row of the matrix.</param>
-    public Matrix3d(
-        double m00, double m01, double m02,
-        double m10, double m11, double m12,
-        double m20, double m21, double m22)
+    public Matrix3(
+        float m00, float m01, float m02,
+        float m10, float m11, float m12,
+        float m20, float m21, float m22)
     {
-      Row0 = new Vector3d(m00, m01, m02);
-      Row1 = new Vector3d(m10, m11, m12);
-      Row2 = new Vector3d(m20, m21, m22);
+      Row0 = new Vector3(m00, m01, m02);
+      Row1 = new Vector3(m10, m11, m12);
+      Row2 = new Vector3(m20, m21, m22);
     }
 
     /// <summary>
     /// Constructs a new instance.
     /// </summary>
-    /// <param name="matrix">A Matrix4d to take the upper-left 3x3 from.</param>
-    public Matrix3d(Matrix4d matrix)
+    /// <param name="matrix">A Matrix4 to take the upper-left 3x3 from.</param>
+    public Matrix3(Matrix4 matrix)
     {
       Row0 = matrix.Row0.Xyz;
       Row1 = matrix.Row1.Xyz;
@@ -115,97 +120,96 @@ namespace OpenTK
     /// <summary>
     /// Gets the determinant of this matrix.
     /// </summary>
-    public double Determinant
+    public float Determinant
     {
       get
       {
-        double m11 = Row0.X, m12 = Row0.Y, m13 = Row0.Z,
+        float m11 = Row0.X, m12 = Row0.Y, m13 = Row0.Z,
         m21 = Row1.X, m22 = Row1.Y, m23 = Row1.Z,
         m31 = Row2.X, m32 = Row2.Y, m33 = Row2.Z;
 
-        return
-            m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32
-                - m13 * m22 * m31 - m11 * m23 * m32 - m12 * m21 * m33;
+        return m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32
+             - m13 * m22 * m31 - m11 * m23 * m32 - m12 * m21 * m33;
       }
     }
 
     /// <summary>
     /// Gets the first column of this matrix.
     /// </summary>
-    public Vector3d Column0
+    public Vector3 Column0
     {
-      get { return new Vector3d(Row0.X, Row1.X, Row2.X); }
+      get { return new Vector3(Row0.X, Row1.X, Row2.X); }
     }
 
     /// <summary>
     /// Gets the second column of this matrix.
     /// </summary>
-    public Vector3d Column1
+    public Vector3 Column1
     {
-      get { return new Vector3d(Row0.Y, Row1.Y, Row2.Y); }
+      get { return new Vector3(Row0.Y, Row1.Y, Row2.Y); }
     }
 
     /// <summary>
     /// Gets the third column of this matrix.
     /// </summary>
-    public Vector3d Column2
+    public Vector3 Column2
     {
-      get { return new Vector3d(Row0.Z, Row1.Z, Row2.Z); }
+      get { return new Vector3(Row0.Z, Row1.Z, Row2.Z); }
     }
 
     /// <summary>
     /// Gets or sets the value at row 1, column 1 of this instance.
     /// </summary>
-    public double M11 { get { return Row0.X; } set { Row0.X = value; } }
+    public float M11 { get { return Row0.X; } set { Row0.X = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 1, column 2 of this instance.
     /// </summary>
-    public double M12 { get { return Row0.Y; } set { Row0.Y = value; } }
+    public float M12 { get { return Row0.Y; } set { Row0.Y = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 1, column 3 of this instance.
     /// </summary>
-    public double M13 { get { return Row0.Z; } set { Row0.Z = value; } }
+    public float M13 { get { return Row0.Z; } set { Row0.Z = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 2, column 1 of this instance.
     /// </summary>
-    public double M21 { get { return Row1.X; } set { Row1.X = value; } }
+    public float M21 { get { return Row1.X; } set { Row1.X = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 2, column 2 of this instance.
     /// </summary>
-    public double M22 { get { return Row1.Y; } set { Row1.Y = value; } }
+    public float M22 { get { return Row1.Y; } set { Row1.Y = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 2, column 3 of this instance.
     /// </summary>
-    public double M23 { get { return Row1.Z; } set { Row1.Z = value; } }
+    public float M23 { get { return Row1.Z; } set { Row1.Z = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 3, column 1 of this instance.
     /// </summary>
-    public double M31 { get { return Row2.X; } set { Row2.X = value; } }
+    public float M31 { get { return Row2.X; } set { Row2.X = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 3, column 2 of this instance.
     /// </summary>
-    public double M32 { get { return Row2.Y; } set { Row2.Y = value; } }
+    public float M32 { get { return Row2.Y; } set { Row2.Y = value; } }
 
     /// <summary>
     /// Gets or sets the value at row 3, column 3 of this instance.
     /// </summary>
-    public double M33 { get { return Row2.Z; } set { Row2.Z = value; } }
+    public float M33 { get { return Row2.Z; } set { Row2.Z = value; } }
 
     /// <summary>
     /// Gets or sets the values along the main diagonal of the matrix.
     /// </summary>
-    public Vector3d Diagonal
+    public Vector3 Diagonal
     {
       get
       {
-        return new Vector3d(Row0.X, Row1.Y, Row2.Z);
+        return new Vector3(Row0.X, Row1.Y, Row2.Z);
       }
       set
       {
@@ -218,7 +222,7 @@ namespace OpenTK
     /// <summary>
     /// Gets the trace of the matrix, the sum of the values along the diagonal.
     /// </summary>
-    public double Trace { get { return Row0.X + Row1.Y + Row2.Z; } }
+    public float Trace { get { return Row0.X + Row1.Y + Row2.Z; } }
 
     #endregion
 
@@ -227,7 +231,7 @@ namespace OpenTK
     /// <summary>
     /// Gets or sets the value at a specified row and column.
     /// </summary>
-    public double this[int rowIndex, int columnIndex]
+    public float this[int rowIndex, int columnIndex]
     {
       get
       {
@@ -256,7 +260,7 @@ namespace OpenTK
     /// </summary>
     public void Invert()
     {
-      this = Matrix3d.Invert(this);
+      this = Matrix3.Invert(this);
     }
 
     #endregion
@@ -268,7 +272,7 @@ namespace OpenTK
     /// </summary>
     public void Transpose()
     {
-      this = Matrix3d.Transpose(this);
+      this = Matrix3.Transpose(this);
     }
 
     #endregion
@@ -276,9 +280,9 @@ namespace OpenTK
     /// <summary>
     /// Returns a normalised copy of this instance.
     /// </summary>
-    public Matrix3d Normalized()
+    public Matrix3 Normalized()
     {
-      Matrix3d m = this;
+      Matrix3 m = this;
       m.Normalize();
       return m;
     }
@@ -297,21 +301,20 @@ namespace OpenTK
     /// <summary>
     /// Returns an inverted copy of this instance.
     /// </summary>
-    public Matrix3d Inverted()
+    public Matrix3 Inverted()
     {
-      Matrix3d m = this;
+      Matrix3 m = this;
       if (m.Determinant != 0)
         m.Invert();
       return m;
     }
 
-
     /// <summary>
     /// Returns a copy of this Matrix3 without scale.
     /// </summary>
-    public Matrix3d ClearScale()
+    public Matrix3 ClearScale()
     {
-      Matrix3d m = this;
+      Matrix3 m = this;
       m.Row0 = m.Row0.Normalized();
       m.Row1 = m.Row1.Normalized();
       m.Row2 = m.Row2.Normalized();
@@ -320,25 +323,25 @@ namespace OpenTK
     /// <summary>
     /// Returns a copy of this Matrix3 without rotation.
     /// </summary>
-    public Matrix3d ClearRotation()
+    public Matrix3 ClearRotation()
     {
-      Matrix3d m = this;
-      m.Row0 = new Vector3d(m.Row0.Length, 0, 0);
-      m.Row1 = new Vector3d(0, m.Row1.Length, 0);
-      m.Row2 = new Vector3d(0, 0, m.Row2.Length);
+      Matrix3 m = this;
+      m.Row0 = new Vector3(m.Row0.Length, 0, 0);
+      m.Row1 = new Vector3(0, m.Row1.Length, 0);
+      m.Row2 = new Vector3(0, 0, m.Row2.Length);
       return m;
     }
 
     /// <summary>
     /// Returns the scale component of this instance.
     /// </summary>
-    public Vector3d ExtractScale() { return new Vector3d(Row0.Length, Row1.Length, Row2.Length); }
+    public Vector3 ExtractScale() { return new Vector3(Row0.Length, Row1.Length, Row2.Length); }
 
     /// <summary>
     /// Returns the rotation component of this instance. Quite slow.
     /// </summary>
     /// <param name="row_normalise">Whether the method should row-normalise (i.e. remove scale from) the Matrix. Pass false if you know it's already normalised.</param>
-    public Quaterniond ExtractRotation(bool row_normalise = true)
+    public Quaternion ExtractRotation(bool row_normalise = true)
     {
       var row0 = Row0;
       var row1 = Row1;
@@ -353,48 +356,48 @@ namespace OpenTK
 
       // code below adapted from Blender
 
-      Quaterniond q = new Quaterniond();
+      Quaternion q = new Quaternion();
       double trace = 0.25 * (row0[0] + row1[1] + row2[2] + 1.0);
 
       if (trace > 0)
       {
         double sq = Math.Sqrt(trace);
 
-        q.W = sq;
+        q.W = (float)sq;
         sq = 1.0 / (4.0 * sq);
-        q.X = (row1[2] - row2[1]) * sq;
-        q.Y = (row2[0] - row0[2]) * sq;
-        q.Z = (row0[1] - row1[0]) * sq;
+        q.X = (float)((row1[2] - row2[1]) * sq);
+        q.Y = (float)((row2[0] - row0[2]) * sq);
+        q.Z = (float)((row0[1] - row1[0]) * sq);
       }
       else if (row0[0] > row1[1] && row0[0] > row2[2])
       {
         double sq = 2.0 * Math.Sqrt(1.0 + row0[0] - row1[1] - row2[2]);
 
-        q.X = 0.25 * sq;
+        q.X = (float)(0.25 * sq);
         sq = 1.0 / sq;
-        q.W = (row2[1] - row1[2]) * sq;
-        q.Y = (row1[0] + row0[1]) * sq;
-        q.Z = (row2[0] + row0[2]) * sq;
+        q.W = (float)((row2[1] - row1[2]) * sq);
+        q.Y = (float)((row1[0] + row0[1]) * sq);
+        q.Z = (float)((row2[0] + row0[2]) * sq);
       }
       else if (row1[1] > row2[2])
       {
         double sq = 2.0 * Math.Sqrt(1.0 + row1[1] - row0[0] - row2[2]);
 
-        q.Y = 0.25 * sq;
+        q.Y = (float)(0.25 * sq);
         sq = 1.0 / sq;
-        q.W = (row2[0] - row0[2]) * sq;
-        q.X = (row1[0] + row0[1]) * sq;
-        q.Z = (row2[1] + row1[2]) * sq;
+        q.W = (float)((row2[0] - row0[2]) * sq);
+        q.X = (float)((row1[0] + row0[1]) * sq);
+        q.Z = (float)((row2[1] + row1[2]) * sq);
       }
       else
       {
         double sq = 2.0 * Math.Sqrt(1.0 + row2[2] - row0[0] - row1[1]);
 
-        q.Z = 0.25 * sq;
+        q.Z = (float)(0.25 * sq);
         sq = 1.0 / sq;
-        q.W = (row1[0] - row0[1]) * sq;
-        q.X = (row2[0] + row0[2]) * sq;
-        q.Y = (row2[1] + row1[2]) * sq;
+        q.W = (float)((row1[0] - row0[1]) * sq);
+        q.X = (float)((row2[0] + row0[2]) * sq);
+        q.Y = (float)((row2[1] + row1[2]) * sq);
       }
 
       q.Normalize();
@@ -413,26 +416,26 @@ namespace OpenTK
     /// <param name="axis">The axis to rotate about.</param>
     /// <param name="angle">Angle in radians to rotate counter-clockwise (looking in the direction of the given axis).</param>
     /// <param name="result">A matrix instance.</param>
-    public static void CreateFromAxisAngle(Vector3d axis, double angle, out Matrix3d result)
+    public static void CreateFromAxisAngle(Vector3 axis, float angle, out Matrix3 result)
     {
       //normalize and create a local copy of the vector.
       axis.Normalize();
-      double axisX = axis.X, axisY = axis.Y, axisZ = axis.Z;
+      float axisX = axis.X, axisY = axis.Y, axisZ = axis.Z;
 
       //calculate angles
-      double cos = System.Math.Cos(-angle);
-      double sin = System.Math.Sin(-angle);
-      double t = 1.0f - cos;
+      float cos = (float)System.Math.Cos(-angle);
+      float sin = (float)System.Math.Sin(-angle);
+      float t = 1.0f - cos;
 
       //do the conversion math once
-      double tXX = t * axisX * axisX,
+      float tXX = t * axisX * axisX,
       tXY = t * axisX * axisY,
       tXZ = t * axisX * axisZ,
       tYY = t * axisY * axisY,
       tYZ = t * axisY * axisZ,
       tZZ = t * axisZ * axisZ;
 
-      double sinX = sin * axisX,
+      float sinX = sin * axisX,
       sinY = sin * axisY,
       sinZ = sin * axisZ;
 
@@ -453,9 +456,9 @@ namespace OpenTK
     /// <param name="axis">The axis to rotate about.</param>
     /// <param name="angle">Angle in radians to rotate counter-clockwise (looking in the direction of the given axis).</param>
     /// <returns>A matrix instance.</returns>
-    public static Matrix3d CreateFromAxisAngle(Vector3d axis, double angle)
+    public static Matrix3 CreateFromAxisAngle(Vector3 axis, float angle)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateFromAxisAngle(axis, angle, out result);
       return result;
     }
@@ -469,10 +472,10 @@ namespace OpenTK
     /// </summary>
     /// <param name="q">Quaternion to translate.</param>
     /// <param name="result">Matrix result.</param>
-    public static void CreateFromQuaternion(ref Quaterniond q, out Matrix3d result)
+    public static void CreateFromQuaternion(ref Quaternion q, out Matrix3 result)
     {
-      Vector3d axis;
-      double angle;
+      Vector3 axis;
+      float angle;
       q.ToAxisAngle(out axis, out angle);
       CreateFromAxisAngle(axis, angle, out result);
     }
@@ -482,9 +485,9 @@ namespace OpenTK
     /// </summary>
     /// <param name="q">Quaternion to translate.</param>
     /// <returns>A matrix instance.</returns>
-    public static Matrix3d CreateFromQuaternion(Quaterniond q)
+    public static Matrix3 CreateFromQuaternion(Quaternion q)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateFromQuaternion(ref q, out result);
       return result;
     }
@@ -497,11 +500,11 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the x-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <param name="result">The resulting Matrix3d instance.</param>
-    public static void CreateRotationX(double angle, out Matrix3d result)
+    /// <param name="result">The resulting Matrix3 instance.</param>
+    public static void CreateRotationX(float angle, out Matrix3 result)
     {
-      double cos = System.Math.Cos(angle);
-      double sin = System.Math.Sin(angle);
+      float cos = (float)System.Math.Cos(angle);
+      float sin = (float)System.Math.Sin(angle);
 
       result = Identity;
       result.Row1.Y = cos;
@@ -514,10 +517,10 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the x-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <returns>The resulting Matrix3d instance.</returns>
-    public static Matrix3d CreateRotationX(double angle)
+    /// <returns>The resulting Matrix3 instance.</returns>
+    public static Matrix3 CreateRotationX(float angle)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateRotationX(angle, out result);
       return result;
     }
@@ -526,11 +529,11 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the y-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <param name="result">The resulting Matrix3d instance.</param>
-    public static void CreateRotationY(double angle, out Matrix3d result)
+    /// <param name="result">The resulting Matrix3 instance.</param>
+    public static void CreateRotationY(float angle, out Matrix3 result)
     {
-      double cos = System.Math.Cos(angle);
-      double sin = System.Math.Sin(angle);
+      float cos = (float)System.Math.Cos(angle);
+      float sin = (float)System.Math.Sin(angle);
 
       result = Identity;
       result.Row0.X = cos;
@@ -543,10 +546,10 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the y-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <returns>The resulting Matrix3d instance.</returns>
-    public static Matrix3d CreateRotationY(double angle)
+    /// <returns>The resulting Matrix3 instance.</returns>
+    public static Matrix3 CreateRotationY(float angle)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateRotationY(angle, out result);
       return result;
     }
@@ -555,11 +558,11 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the z-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <param name="result">The resulting Matrix3d instance.</param>
-    public static void CreateRotationZ(double angle, out Matrix3d result)
+    /// <param name="result">The resulting Matrix3 instance.</param>
+    public static void CreateRotationZ(float angle, out Matrix3 result)
     {
-      double cos = System.Math.Cos(angle);
-      double sin = System.Math.Sin(angle);
+      float cos = (float)System.Math.Cos(angle);
+      float sin = (float)System.Math.Sin(angle);
 
       result = Identity;
       result.Row0.X = cos;
@@ -572,10 +575,10 @@ namespace OpenTK
     /// Builds a rotation matrix for a rotation around the z-axis.
     /// </summary>
     /// <param name="angle">The counter-clockwise angle in radians.</param>
-    /// <returns>The resulting Matrix3d instance.</returns>
-    public static Matrix3d CreateRotationZ(double angle)
+    /// <returns>The resulting Matrix3 instance.</returns>
+    public static Matrix3 CreateRotationZ(float angle)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateRotationZ(angle, out result);
       return result;
     }
@@ -589,9 +592,9 @@ namespace OpenTK
     /// </summary>
     /// <param name="scale">Single scale factor for the x, y, and z axes.</param>
     /// <returns>A scale matrix.</returns>
-    public static Matrix3d CreateScale(double scale)
+    public static Matrix3 CreateScale(float scale)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateScale(scale, out result);
       return result;
     }
@@ -601,9 +604,9 @@ namespace OpenTK
     /// </summary>
     /// <param name="scale">Scale factors for the x, y, and z axes.</param>
     /// <returns>A scale matrix.</returns>
-    public static Matrix3d CreateScale(Vector3d scale)
+    public static Matrix3 CreateScale(Vector3 scale)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateScale(ref scale, out result);
       return result;
     }
@@ -615,9 +618,9 @@ namespace OpenTK
     /// <param name="y">Scale factor for the y axis.</param>
     /// <param name="z">Scale factor for the z axis.</param>
     /// <returns>A scale matrix.</returns>
-    public static Matrix3d CreateScale(double x, double y, double z)
+    public static Matrix3 CreateScale(float x, float y, float z)
     {
-      Matrix3d result;
+      Matrix3 result;
       CreateScale(x, y, z, out result);
       return result;
     }
@@ -627,7 +630,7 @@ namespace OpenTK
     /// </summary>
     /// <param name="scale">Single scale factor for the x, y, and z axes.</param>
     /// <param name="result">A scale matrix.</param>
-    public static void CreateScale(double scale, out Matrix3d result)
+    public static void CreateScale(float scale, out Matrix3 result)
     {
       result = Identity;
       result.Row0.X = scale;
@@ -640,7 +643,7 @@ namespace OpenTK
     /// </summary>
     /// <param name="scale">Scale factors for the x, y, and z axes.</param>
     /// <param name="result">A scale matrix.</param>
-    public static void CreateScale(ref Vector3d scale, out Matrix3d result)
+    public static void CreateScale(ref Vector3 scale, out Matrix3 result)
     {
       result = Identity;
       result.Row0.X = scale.X;
@@ -655,7 +658,7 @@ namespace OpenTK
     /// <param name="y">Scale factor for the y axis.</param>
     /// <param name="z">Scale factor for the z axis.</param>
     /// <param name="result">A scale matrix.</param>
-    public static void CreateScale(double x, double y, double z, out Matrix3d result)
+    public static void CreateScale(float x, float y, float z, out Matrix3 result)
     {
       result = Identity;
       result.Row0.X = x;
@@ -673,9 +676,9 @@ namespace OpenTK
     /// <param name="left">The left operand of the addition.</param>
     /// <param name="right">The right operand of the addition.</param>
     /// <returns>A new instance that is the result of the addition.</returns>
-    public static Matrix3d Add(Matrix3d left, Matrix3d right)
+    public static Matrix3 Add(Matrix3 left, Matrix3 right)
     {
-      Matrix3d result;
+      Matrix3 result;
       Add(ref left, ref right, out result);
       return result;
     }
@@ -686,11 +689,11 @@ namespace OpenTK
     /// <param name="left">The left operand of the addition.</param>
     /// <param name="right">The right operand of the addition.</param>
     /// <param name="result">A new instance that is the result of the addition.</param>
-    public static void Add(ref Matrix3d left, ref Matrix3d right, out Matrix3d result)
+    public static void Add(ref Matrix3 left, ref Matrix3 right, out Matrix3 result)
     {
-      Vector3d.Add(ref left.Row0, ref right.Row0, out result.Row0);
-      Vector3d.Add(ref left.Row1, ref right.Row1, out result.Row1);
-      Vector3d.Add(ref left.Row2, ref right.Row2, out result.Row2);
+      Vector3.Add(ref left.Row0, ref right.Row0, out result.Row0);
+      Vector3.Add(ref left.Row1, ref right.Row1, out result.Row1);
+      Vector3.Add(ref left.Row2, ref right.Row2, out result.Row2);
     }
 
     #endregion
@@ -703,9 +706,9 @@ namespace OpenTK
     /// <param name="left">The left operand of the multiplication.</param>
     /// <param name="right">The right operand of the multiplication.</param>
     /// <returns>A new instance that is the result of the multiplication</returns>
-    public static Matrix3d Mult(Matrix3d left, Matrix3d right)
+    public static Matrix3 Mult(Matrix3 left, Matrix3 right)
     {
-      Matrix3d result;
+      Matrix3 result;
       Mult(ref left, ref right, out result);
       return result;
     }
@@ -716,9 +719,9 @@ namespace OpenTK
     /// <param name="left">The left operand of the multiplication.</param>
     /// <param name="right">The right operand of the multiplication.</param>
     /// <param name="result">A new instance that is the result of the multiplication</param>
-    public static void Mult(ref Matrix3d left, ref Matrix3d right, out Matrix3d result)
+    public static void Mult(ref Matrix3 left, ref Matrix3 right, out Matrix3 result)
     {
-      double lM11 = left.Row0.X, lM12 = left.Row0.Y, lM13 = left.Row0.Z,
+      float lM11 = left.Row0.X, lM12 = left.Row0.Y, lM13 = left.Row0.Z,
       lM21 = left.Row1.X, lM22 = left.Row1.Y, lM23 = left.Row1.Z,
       lM31 = left.Row2.X, lM32 = left.Row2.Y, lM33 = left.Row2.Z,
       rM11 = right.Row0.X, rM12 = right.Row0.Y, rM13 = right.Row0.Z,
@@ -745,14 +748,14 @@ namespace OpenTK
     /// </summary>
     /// <param name="mat">The matrix to invert</param>
     /// <param name="result">The inverse of the given matrix if it has one, or the input if it is singular</param>
-    /// <exception cref="InvalidOperationException">Thrown if the Matrix3d is singular.</exception>
-    public static void Invert(ref Matrix3d mat, out Matrix3d result)
+    /// <exception cref="InvalidOperationException">Thrown if the Matrix3 is singular.</exception>
+    public static void Invert(ref Matrix3 mat, out Matrix3 result)
     {
       int[] colIdx = { 0, 0, 0 };
       int[] rowIdx = { 0, 0, 0 };
       int[] pivotIdx = { -1, -1, -1 };
 
-      double[,] inverse = {{mat.Row0.X, mat.Row0.Y, mat.Row0.Z},
+      float[,] inverse = {{mat.Row0.X, mat.Row0.Y, mat.Row0.Z},
                 {mat.Row1.X, mat.Row1.Y, mat.Row1.Z},
                 {mat.Row2.X, mat.Row2.Y, mat.Row2.Z}};
 
@@ -760,7 +763,7 @@ namespace OpenTK
       int irow = 0;
       for (int i = 0; i < 3; i++)
       {
-        double maxPivot = 0.0;
+        float maxPivot = 0.0f;
         for (int j = 0; j < 3; j++)
         {
           if (pivotIdx[j] != 0)
@@ -769,7 +772,7 @@ namespace OpenTK
             {
               if (pivotIdx[k] == -1)
               {
-                double absVal = System.Math.Abs(inverse[j, k]);
+                float absVal = System.Math.Abs(inverse[j, k]);
                 if (absVal > maxPivot)
                 {
                   maxPivot = absVal;
@@ -792,7 +795,7 @@ namespace OpenTK
         {
           for (int k = 0; k < 3; ++k)
           {
-            double f = inverse[irow, k];
+            float f = inverse[irow, k];
             inverse[irow, k] = inverse[icol, k];
             inverse[icol, k] = f;
           }
@@ -801,15 +804,15 @@ namespace OpenTK
         rowIdx[i] = irow;
         colIdx[i] = icol;
 
-        double pivot = inverse[icol, icol];
+        float pivot = inverse[icol, icol];
 
-        if (pivot == 0.0)
+        if (pivot == 0.0f)
         {
           throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
         }
 
-        double oneOverPivot = 1.0 / pivot;
-        inverse[icol, icol] = 1.0;
+        float oneOverPivot = 1.0f / pivot;
+        inverse[icol, icol] = 1.0f;
         for (int k = 0; k < 3; ++k)
           inverse[icol, k] *= oneOverPivot;
 
@@ -817,8 +820,8 @@ namespace OpenTK
         {
           if (icol != j)
           {
-            double f = inverse[j, icol];
-            inverse[j, icol] = 0.0;
+            float f = inverse[j, icol];
+            inverse[j, icol] = 0.0f;
             for (int k = 0; k < 3; ++k)
               inverse[j, k] -= inverse[icol, k] * f;
           }
@@ -831,7 +834,7 @@ namespace OpenTK
         int ic = colIdx[j];
         for (int k = 0; k < 3; ++k)
         {
-          double f = inverse[k, ir];
+          float f = inverse[k, ir];
           inverse[k, ir] = inverse[k, ic];
           inverse[k, ic] = f;
         }
@@ -854,9 +857,9 @@ namespace OpenTK
     /// <param name="mat">The matrix to invert</param>
     /// <returns>The inverse of the given matrix if it has one, or the input if it is singular</returns>
     /// <exception cref="InvalidOperationException">Thrown if the Matrix4 is singular.</exception>
-    public static Matrix3d Invert(Matrix3d mat)
+    public static Matrix3 Invert(Matrix3 mat)
     {
-      Matrix3d result;
+      Matrix3 result;
       Invert(ref mat, out result);
       return result;
     }
@@ -870,9 +873,9 @@ namespace OpenTK
     /// </summary>
     /// <param name="mat">The matrix to transpose</param>
     /// <returns>The transpose of the given matrix</returns>
-    public static Matrix3d Transpose(Matrix3d mat)
+    public static Matrix3 Transpose(Matrix3 mat)
     {
-      return new Matrix3d(mat.Column0, mat.Column1, mat.Column2);
+      return new Matrix3(mat.Column0, mat.Column1, mat.Column2);
     }
 
     /// <summary>
@@ -880,11 +883,17 @@ namespace OpenTK
     /// </summary>
     /// <param name="mat">The matrix to transpose</param>
     /// <param name="result">The result of the calculation</param>
-    public static void Transpose(ref Matrix3d mat, out Matrix3d result)
+    public static void Transpose(ref Matrix3 mat, out Matrix3 result)
     {
-      result.Row0 = mat.Column0;
-      result.Row1 = mat.Column1;
-      result.Row2 = mat.Column2;
+      result.Row0.X = mat.Row0.X;
+      result.Row0.Y = mat.Row1.X;
+      result.Row0.Z = mat.Row2.X;
+      result.Row1.X = mat.Row0.Y;
+      result.Row1.Y = mat.Row1.Y;
+      result.Row1.Z = mat.Row2.Y;
+      result.Row2.X = mat.Row0.Z;
+      result.Row2.Y = mat.Row1.Z;
+      result.Row2.Z = mat.Row2.Z;
     }
 
     #endregion
@@ -899,9 +908,9 @@ namespace OpenTK
     /// <param name="left">left-hand operand</param>
     /// <param name="right">right-hand operand</param>
     /// <returns>A new Matrix3d which holds the result of the multiplication</returns>
-    public static Matrix3d operator *(Matrix3d left, Matrix3d right)
+    public static Matrix3 operator *(Matrix3 left, Matrix3 right)
     {
-      return Matrix3d.Mult(left, right);
+      return Matrix3.Mult(left, right);
     }
 
     /// <summary>
@@ -910,7 +919,7 @@ namespace OpenTK
     /// <param name="left">The first instance.</param>
     /// <param name="right">The second instance.</param>
     /// <returns>True, if left equals right; false otherwise.</returns>
-    public static bool operator ==(Matrix3d left, Matrix3d right)
+    public static bool operator ==(Matrix3 left, Matrix3 right)
     {
       return left.Equals(right);
     }
@@ -921,7 +930,7 @@ namespace OpenTK
     /// <param name="left">The first instance.</param>
     /// <param name="right">The second instance.</param>
     /// <returns>True, if left does not equal right; false otherwise.</returns>
-    public static bool operator !=(Matrix3d left, Matrix3d right)
+    public static bool operator !=(Matrix3 left, Matrix3 right)
     {
       return !left.Equals(right);
     }
@@ -971,10 +980,10 @@ namespace OpenTK
     /// <returns>True if the instances are equal; false otherwise.</returns>
     public override bool Equals(object obj)
     {
-      if (!(obj is Matrix3d))
+      if (!(obj is Matrix3))
         return false;
 
-      return this.Equals((Matrix3d)obj);
+      return this.Equals((Matrix3)obj);
     }
 
     #endregion
@@ -983,12 +992,12 @@ namespace OpenTK
 
     #endregion
 
-    #region IEquatable<Matrix3d> Members
+    #region IEquatable<Matrix3> Members
 
     /// <summary>Indicates whether the current matrix is equal to another matrix.</summary>
     /// <param name="other">A matrix to compare with this matrix.</param>
     /// <returns>true if the current matrix is equal to the matrix parameter; otherwise, false.</returns>
-    public bool Equals(Matrix3d other)
+    public bool Equals(Matrix3 other)
     {
       return
           Row0 == other.Row0 &&
