@@ -1,18 +1,12 @@
-This is MiniTK, an easy to use set of OpenGL and OpenAL bindings for C#, based on OpenTK. It is designed for use with (and was originally part of) SDL2#, a C# wrapper for SDL2, but does not depend on that project. See https://github.com/flibitijibibo/SDL2-CS for more information.
+This is OalTK, an easy to use set of OpenAL bindings for C#, based on MiniTK/OpenTK.
 
 License
 -------
-MiniTK is released under the zlib license. See LICENSE for details.
+OalTK is released under the zlib license. See LICENSE for details.
 
-MiniTK uses code from of OpenTK, which is released under the MIT license.
+OalTK uses code from MiniTK, which is release under the zlib license, and OpenTK, which is released under the MIT license.
 See opentk.LICENSE for details.
 
-Using MiniTK
+Using OalTK
 ------------
-To use the OpenGL/OpenAL bindings, simply use them as you were with OpenTK,
-but after calling SDL_GL_CreateContext, add the following lines:
-
-OpenTK.Graphics.GraphicsContext.CurrentContext = yourContextIntPtr;
-GL.LoadAll( SDL.SDL_GL_GetProcAddress );
-
-This will load the OpenTK entry points.
+To use the OpenAL bindings, simply use them as you were with OpenTK.
